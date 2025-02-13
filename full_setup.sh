@@ -13,9 +13,10 @@ apt update && apt install -y bazel
 # Install Docker
 curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh
 
-# Log into Docker Hub (Using Your Token)
-echo "🔥 Logging into Docker Hub..."
-echo "dckr_pat_42-ra0__ArBmldgvD3tXb7cCmtc" | docker login -u kironkeyz --password-stdin
+# Secure Docker Login - User Inputs Token
+echo "Enter your Docker Hub access token:"
+read -s DOCKER_ACCESS_TOKEN
+echo "$DOCKER_ACCESS_TOKEN" | docker login -u kironkeyz --password-stdin
 
 # Clone AI Repository
 echo "🔥 Cloning GitHub Repository..."
