@@ -16,11 +16,18 @@ curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh
 # Secure Docker Login - User Inputs Token
 echo "Enter your Docker Hub access token:"
 read -s DOCKER_ACCESS_TOKEN
-echo "$DOCKER_ACCESS_TOKEN" | docker login -u kironkeyz --password-stdin
+echo "$DOCKER_ACCESS_TOKEN" | docker login -u kironkeys --password-stdin
 
-# Clone AI Repository
-echo "🔥 Cloning GitHub Repository..."
-git clone https://github.com/kironkeyz/runpodsetup.git && cd runpodsetup
+# Secure GitHub Authentication - User Inputs Token
+echo "Enter your GitHub access token:"
+read -s GITHUB_ACCESS_TOKEN
+git clone https://$GITHUB_ACCESS_TOKEN@github.com/kironkeys/runpodsetup.git
+cd runpodsetup
+
+# Fix Docker Daemon Not Running Issue
+echo "🔥 Starting Docker Service..."
+systemctl start docker
+systemctl enable docker
 
 # Build Docker Image with Bazel
 echo "🔥 Building Docker Image..."
@@ -29,11 +36,11 @@ docker build -t keys-ai .
 
 # Push Docker Image to Docker Hub
 echo "🔥 Pushing Docker Image to Docker Hub..."
-docker tag keys-ai kironkeyz/keys-ai:latest
-docker push kironkeyz/keys-ai:latest
+docker tag keys-ai kironkeys/keys-ai:latest
+docker push kironkeys/keys-ai:latest
 
 # Run AI Model in Docker
 echo "🔥 Running AI Model..."
-docker run -p 8000:8000 kironkeyz/keys-ai:latest
+docker run -p 8000:8000 kironkeys/keys-ai:latest
 
 echo "✅ Setup Complete! AI Model is running at http://62.169.158.149:8000"
